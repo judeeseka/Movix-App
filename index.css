@@ -216,3 +216,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .scrollbar-none {
+    @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+  }
+}

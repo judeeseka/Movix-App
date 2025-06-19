@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { Film, Search, User, LogOut, Menu, Sun, Moon } from "lucide-react";
-import { useThemeStore } from "../../stores/themeStore";
+import { useThemeStore } from "../../stores/theme-store";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import {
