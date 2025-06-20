@@ -59,9 +59,9 @@ export default function Header() {
               Movies
             </Link>
             <Link
-              to="/series"
+              to="/tv-series"
               className={`text-sm font-medium transition-colors hover:text-amber-500 ${
-                isActive("/series")
+                isActive("/tv-series")
                   ? "text-amber-500"
                   : "text-gray-700 dark:text-gray-300"
               }`}

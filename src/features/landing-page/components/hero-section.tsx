@@ -1,4 +1,3 @@
-import { tmdbBaseUrl } from "@/lib/contants";
 import { useEffect, useState } from "react";
 import {
   Bookmark,
@@ -12,6 +11,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
 import type { MovieData } from "../../../types/types";
+import { getBackdropUrl } from "@/lib/utils";
 
 const HeroSection = ({
   heroData,
@@ -58,7 +58,7 @@ const HeroSection = ({
             exit={{ opacity: 0 }}
           >
             <img
-              src={`${tmdbBaseUrl}original${currentTrending.backdrop_path}`}
+              src={getBackdropUrl(currentTrending.backdrop_path, "original")}
               alt={
                 currentTrending.media_type === "movie"
                   ? currentTrending.title
@@ -122,7 +122,7 @@ const HeroSection = ({
                 : currentTrending.name}
             </h1>
 
-            <p className="md:text-lg text-gray-200 max-w-2xl leading-normal">
+            <p className="md:text-lg text-gray-200 max-w-2xl line-clamp-[11] leading-normal">
               {currentTrending.overview}
             </p>
 
@@ -130,8 +130,8 @@ const HeroSection = ({
               <Link
                 to={
                   currentTrending.media_type === "movie"
-                    ? `/movie/${currentTrending.id}`
-                    : `/tv/${currentTrending.id}`
+                    ? `/movies/${currentTrending.id}`
+                    : `/tv-series/${currentTrending.id}`
                 }
                 className="flex items-center justify-center space-x-2 bg-gradient-to-r from-amber-500 to-red-500 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-200 cursor-pointer group"
               >

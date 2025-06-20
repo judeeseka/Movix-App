@@ -4,11 +4,13 @@ import { Film } from "lucide-react";
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg";
   text?: string;
+  landing?: boolean;
 }
 
 export default function LoadingSpinner({
   size = "md",
   text,
+  landing,
 }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: "h-4 w-4",
@@ -17,7 +19,11 @@ export default function LoadingSpinner({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 h-[calc(100vh_-_64px)]">
+    <div
+      className={`flex flex-col items-center justify-center space-y-4 ${
+        landing && "h-[calc(100vh_-_64px)]"
+      }`}
+    >
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}

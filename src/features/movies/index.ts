@@ -1,0 +1,1 @@
+export { default as MovieHome } from "./pages/movie-home"

@@ -32,3 +32,33 @@ export interface Result {
     first_air_date?:   Date;
     origin_country?:   string[];
 }
+
+export interface IMovie {
+    success: boolean;
+    message: string;
+    data:    Data;
+}
+
+export interface IMovieData {
+    page:          number;
+    results:       IMovieResult[];
+    total_pages:   number;
+    total_results: number;
+}
+
+export interface IMovieResult {
+    adult:             boolean;
+    backdrop_path:     string;
+    genre_ids:         number[];
+    id:                number;
+    original_language: string;
+    original_title:    string;
+    overview:          string;
+    popularity:        number;
+    poster_path:       string;
+    release_date:      Date;
+    title:             string;
+    video:             boolean;
+    vote_average:      number;
+    vote_count:        number;
+}

@@ -28,7 +28,7 @@ const Home = () => {
     topRatedMoviesQuery.isLoading ||
     topRatedSeriesQuery.isLoading
   ) {
-    return <LoadingSpinner text="Loading movie content..." />;
+    return <LoadingSpinner landing text="Loading movie content..." />;
   }
 
   return (

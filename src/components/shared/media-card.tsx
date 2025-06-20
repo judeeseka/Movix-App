@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, Heart, Bookmark, Calendar, Tv } from "lucide-react";
 import type { Result } from "../../types/types";
-import { tmdbBaseUrl } from "@/lib/contants";
+import { getPosterUrl } from "@/lib/utils";
 
 interface MediaCardProps {
   media: Result;
@@ -10,6 +10,7 @@ interface MediaCardProps {
   onWatchlist?: (media: Result) => void;
   isFavorited?: boolean;
   isInWatchlist?: boolean;
+  mode?: "both";
   type: "movie" | "tv";
 }
 
@@ -25,20 +26,22 @@ export default function MediaCard({
   const releaseDate =
     type === "movie" ? media.release_date : media.first_air_date;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : "TBD";
-  const linkPath = type === "movie" ? `/movie/${media.id}` : `/tv/${media.id}`;
+  const posterUrl = getPosterUrl(media.poster_path, "w500");
+  const linkPath =
+    type === "movie" ? `/movies/${media.id}` : `/tv-series/${media.id}`;
 
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col"
+      className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col h-full"
     >
       {/* Poster */}
       <div className="relative overflow-hidden">
         <img
-          src={`${tmdbBaseUrl}w500${media.poster_path}`}
+          src={posterUrl}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 rounded-t-xl"
+          className="w-full min-h-[250px] object-cover transition-transform duration-500 group-hover:scale-110 rounded-t-xl"
           loading="lazy"
         />
 
