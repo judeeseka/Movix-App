@@ -10,7 +10,6 @@ interface MediaCardProps {
   onWatchlist?: (media: Result) => void;
   isFavorited?: boolean;
   isInWatchlist?: boolean;
-  mode?: "both";
   type: "movie" | "tv";
 }
 
@@ -41,7 +40,7 @@ export default function MediaCard({
         <img
           src={posterUrl}
           alt={title}
-          className="w-full min-h-[250px] object-cover transition-transform duration-500 group-hover:scale-110 rounded-t-xl"
+          className="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-110 rounded-t-xl"
           loading="lazy"
         />
 

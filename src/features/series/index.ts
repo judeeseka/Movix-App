@@ -1,0 +1,1 @@
+export { default as SeriesHome } from "./pages/series-home"

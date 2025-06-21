@@ -62,3 +62,33 @@ export interface IMovieResult {
     vote_average:      number;
     vote_count:        number;
 }
+
+export interface ISeries {
+    success: boolean;
+    message: string;
+    data:    Data;
+}
+
+export interface ISeriesData {
+    page:          number;
+    results:       Result[];
+    total_pages:   number;
+    total_results: number;
+}
+
+export interface ISeriesResult {
+    adult:             boolean;
+    backdrop_path:     string;
+    genre_ids:         number[];
+    id:                number;
+    origin_country:    Array<"FR" | "GB" | "HU" | "US">;
+    original_language: "en" | "fr" | "hu";
+    original_name:     string;
+    overview:          string;
+    popularity:        number;
+    poster_path:       string;
+    first_air_date:    Date;
+    name:              string;
+    vote_average:      number;
+    vote_count:        number;
+}

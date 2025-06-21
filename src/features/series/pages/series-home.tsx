@@ -1,16 +1,16 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import { getAllMoviesQueryOptions } from "../api/query";
-import { Film, Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, Tv, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { movieGenres } from "@/lib/contants";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { getAllSeriesQueryOptions } from "../api/query";
+import MediaCard from "@/components/shared/media-card";
 import LoadingSpinner from "@/components/shared/loading-spinner";
 import EmptyState from "@/components/shared/empty-state";
-import MediaCard from "@/components/shared/media-card";
 
-const MovieHome = () => {
+const SeriesHome = () => {
   const [searchparams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const currentYear = new Date().getFullYear();
@@ -24,9 +24,10 @@ const MovieHome = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { ref, inView } = useInView();
+
   const { data, status, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
-      getAllMoviesQueryOptions(genre, movieYear, sortBy, rating)
+      getAllSeriesQueryOptions(genre, movieYear, sortBy, rating)
     );
 
   const clearFilters = () => {
@@ -61,13 +62,13 @@ const MovieHome = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-4">
-            <Film className="h-8 w-8 text-amber-500" />
+            <Tv className="h-8 w-8 text-amber-500" />
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Movies
+              TV Shows
             </h1>
           </div>
           <p className="text-gray-600 dark:text-gray-400">
-            Discover amazing movies from our extensive collection
+            Discover amazing TV series from our extensive collection
           </p>
         </div>
 
@@ -140,10 +141,8 @@ const MovieHome = () => {
                   >
                     <option value="popularity.desc">Most Popular</option>
                     <option value="vote_average.desc">Highest Rated</option>
-                    <option value="primary_release_date.desc">
-                      Newest First
-                    </option>
-                    <option value="title.asc">Title A-Z</option>
+                    <option value="first_air_date.desc">Newest First</option>
+                    <option value="name.asc">Title A-Z</option>
                   </select>
                 </div>
 
@@ -181,7 +180,7 @@ const MovieHome = () => {
         {/* Results */}
         {isLoading ? (
           <div className="flex justify-center py-16">
-            <LoadingSpinner size="lg" text="Loading movies..." />
+            <LoadingSpinner size="lg" text="Loading tv series..." />
           </div>
         ) : status === "error" ? (
           <EmptyState
@@ -205,7 +204,7 @@ const MovieHome = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
-                    <MediaCard type="movie" media={movie} />
+                    <MediaCard type="tv" media={movie} />
                   </motion.div>
                 ))
               )}
@@ -219,4 +218,4 @@ const MovieHome = () => {
   );
 };
 
-export default MovieHome;
+export default SeriesHome;
