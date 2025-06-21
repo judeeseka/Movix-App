@@ -27,7 +27,13 @@ export default function MediaCard({
   const year = releaseDate ? new Date(releaseDate).getFullYear() : "TBD";
   const posterUrl = getPosterUrl(media.poster_path, "w500");
   const linkPath =
-    type === "movie" ? `/movies/${media.id}` : `/tv-series/${media.id}`;
+    type === "movie"
+      ? `/movies/${media.title?.toLowerCase().replace(/\s+/g, "-")}?id=${
+          media.id
+        }`
+      : `/tv-series/${media.name?.toLowerCase().replace(/\s+/g, "-")}?id=${
+          media.id
+        }`;
 
   return (
     <motion.div

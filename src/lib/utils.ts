@@ -21,3 +21,14 @@ export const getBackdropUrl = (path: string, size: string = 'w1280') => {
   if (!path) return 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1280&h=720&fit=crop';
   return `https://image.tmdb.org/t/p/${size}${path}`;
 }
+
+export const getProfileUrl = (profilePath: string | null, size: string = "w300") => {
+  if (!profilePath) return "/avatar.webp";
+  return `https://image.tmdb.org/t/p/${size}${profilePath}`;
+};
+
+export const formatRuntime = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours}h ${mins}m`;
+};
