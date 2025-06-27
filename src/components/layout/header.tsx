@@ -15,16 +15,24 @@ import {
 import { profileContent } from "@/lib/contants";
 import { useState } from "react";
 import { SearchModal } from "@/features/search";
+import { useAuthStore } from "@/stores/auth-store";
+import { logoutUser } from "@/features/auth";
+import { toast } from "sonner";
 
 export default function Header() {
   const { theme, toggleTheme } = useThemeStore();
-  const user = true;
+  const { user } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { setToken, setUser } = useAuthStore();
 
   const handleSignOut = async () => {
-    // await signOut();
+    await logoutUser();
+
+    toast.success("Logout successfully!");
+    setToken(null);
+    setUser(null);
     navigate("/");
   };
 

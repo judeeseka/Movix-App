@@ -4,5 +4,6 @@ import { getMiniSearchResult } from "./client";
 export const getMiniSearchQueryOptions = (query: string) => 
     queryOptions({
         queryKey: ["mini-search", query],
-        queryFn: () => getMiniSearchResult(query)
+        queryFn: () => getMiniSearchResult(query),
+        enabled: !!query
     }) 

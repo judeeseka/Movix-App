@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Bookmark,
   ChevronLeft,
@@ -32,15 +32,15 @@ const HeroSection = ({
     }
   };
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTrendingIndex((prev) =>
-        prev < heroData!.results.length - 1 ? prev + 1 : 0
-      );
-    }, 5000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setCurrentTrendingIndex((prev) =>
+  //       prev < heroData!.results.length - 1 ? prev + 1 : 0
+  //     );
+  //   }, 5000);
 
-    return () => clearInterval(intervalId);
-  }, [heroData]);
+  //   return () => clearInterval(intervalId);
+  // }, [heroData]);
 
   const currentTrending = heroData?.results[currentTrendingIndex];
 
