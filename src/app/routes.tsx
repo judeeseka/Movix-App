@@ -3,7 +3,9 @@ import AppLayout from "./layout";
 import { Home } from "@/features/landing-page";
 import { MovieDetails, MovieHome } from "@/features/movies";
 import { SeriesHome } from "@/features/series";
-import { Login, Onboarding, Register } from "@/features/auth";
+import { Login, Onboarding, PersistLogin, Register } from "@/features/auth";
+import { Profile } from "@/features/profile";
+import RequireAuth from "@/components/shared/require-auth";
 
 const AppRoutes = () => {
   return (
@@ -16,8 +18,15 @@ const AppRoutes = () => {
           <Route path="movies" element={<MovieHome />} />
           <Route path="movies/:slug" element={<MovieDetails />} />
           <Route path="tv-series" element={<SeriesHome />} />
+
+          <Route path="profile" element={<Profile />} />
         </Route>
-        <Route path="/onboarding" element={<Onboarding />} />
+
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            <Route path="/onboarding" element={<Onboarding />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

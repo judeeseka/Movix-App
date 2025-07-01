@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AuthResponse, ILogin, IRegister } from "../types/types";
+import type { AuthResponse, ILogin, IRegister, RefreshResponse } from "../types/types";
 
 const authApi = axios.create({
     baseURL: "http://localhost:3000/api/auth",
@@ -30,4 +30,10 @@ export const onboardUser = async (formData: FormData, token: string) => {
         }
     })
     return response.data;
+}
+
+export const refresh = async () => {
+    const response = await authApi.post<RefreshResponse>("/refresh", {});
+
+    return response.data
 }

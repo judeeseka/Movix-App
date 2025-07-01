@@ -21,3 +21,11 @@ export interface AuthResponse {
     message: string;
     success: boolean
 }
+
+export interface RefreshResponse {
+    data: {
+        accessToken: string
+    },
+    message: string;
+    success: boolean;
+}
