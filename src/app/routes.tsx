@@ -3,9 +3,11 @@ import AppLayout from "./layout";
 import { Home } from "@/features/landing-page";
 import { MovieDetails, MovieHome } from "@/features/movies";
 import { SeriesHome } from "@/features/series";
-import { Login, Onboarding, PersistLogin, Register } from "@/features/auth";
+import { Login, Onboarding, Register } from "@/features/auth";
 import { Profile } from "@/features/profile";
-import RequireAuth from "@/components/shared/require-auth";
+import RequireAuth from "@/components/wrappers/require-auth";
+import PersistLogin from "@/components/wrappers/persist-login";
+import NotFound from "@/components/pages/not-found";
 
 const AppRoutes = () => {
   return (
@@ -27,6 +29,8 @@ const AppRoutes = () => {
             <Route path="/onboarding" element={<Onboarding />} />
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

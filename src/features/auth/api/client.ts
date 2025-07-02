@@ -1,39 +1,34 @@
-import axios from "axios";
-import type { AuthResponse, ILogin, IRegister, RefreshResponse } from "../types/types";
-
-const authApi = axios.create({
-    baseURL: "http://localhost:3000/api/auth",
-    withCredentials: true
-})
+import type { AuthResponse, ILogin, IRegister } from "../types/types";
+import { api, secureApi } from "@/lib/axios";
+import { refresh } from "@/lib/refresh-token";
+  
 
 export const registerUser = async (data: IRegister) => {
-    const response = await authApi.post<AuthResponse>("/register", data);
+    const response = await api.post<AuthResponse>("/auth/register", data, {
+        withCredentials: true
+    });
 
     return response.data
 }
 
 export const loginUser = async (data: ILogin) => {
-    const response = await authApi.post<AuthResponse>("/login", data)
+    const response = await api.post<AuthResponse>("/auth/login", data, {
+        withCredentials: true
+    })
 
     return response.data;
 }
 
 export const logoutUser = async () => {
-    const response = await authApi.post("/logout");
+    const response = await api.post("/auth/logout", {}, {
+        withCredentials: true
+    });
     return response;
 }
 
-export const onboardUser = async (formData: FormData, token: string) => {
-    const response = await authApi.post<AuthResponse>("/onboard", formData, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const onboardUser = async (formData: FormData) => {
+    const response = await secureApi.post<AuthResponse>("/auth/onboard", formData)
     return response.data;
 }
 
-export const refresh = async () => {
-    const response = await authApi.post<RefreshResponse>("/refresh", {});
-
-    return response.data
-}
+export const authRefresh = refresh

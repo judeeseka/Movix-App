@@ -1,11 +1,7 @@
+import { api } from "@/lib/axios";
 import { seriesGenres } from "@/lib/contants";
 import { capitalizeWords } from "@/lib/utils";
 import type { ISeries } from "@/types/types";
-import axios from "axios";
-
-const seriesApi = axios.create({
-    baseURL: "http://localhost:3000/api/series",
-  });
 
 export const getAllSeries = async ({
     pageParam,
@@ -22,7 +18,7 @@ export const getAllSeries = async ({
   }) => {
     const genreId = seriesGenres.find((g) => g.name === capitalizeWords(genre));
     
-      const response = await seriesApi.get<ISeries>("/discover", {
+      const response = await api.get<ISeries>("/series/discover", {
         params: {
           page: pageParam,
           ...(genre && { with_genres: genreId!.id }),

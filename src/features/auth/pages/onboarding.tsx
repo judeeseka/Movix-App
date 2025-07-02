@@ -31,7 +31,7 @@ export default function Onboarding() {
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { token, setUser } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const { register, handleSubmit } = useForm<OnboardingForm>();
 
@@ -78,7 +78,7 @@ export default function Onboarding() {
 
       if (avatar) formData.append("profileImg", avatar);
 
-      const response = await onboardUser(formData, token as string);
+      const response = await onboardUser(formData);
 
       setUser({
         avatarUrl: response.data.avatarUrl,

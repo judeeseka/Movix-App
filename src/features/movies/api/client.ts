@@ -1,12 +1,8 @@
 import { movieGenres } from "@/lib/contants";
 import { capitalizeWords } from "@/lib/utils";
 import type { IMovie } from "@/types/types";
-import axios from "axios";
 import type { MovieInfo, MovieReview } from "../types/types";
-
-const movieApi = axios.create({
-  baseURL: "http://localhost:3000/api/movies",
-});
+import { api } from "@/lib/axios";
 
 export const getAllMovies = async ({
   pageParam,
@@ -23,7 +19,7 @@ export const getAllMovies = async ({
 }) => {
   const genreId = movieGenres.find((g) => g.name === capitalizeWords(genre));
 
-  const response = await movieApi.get<IMovie>("/discover", {
+  const response = await api.get<IMovie>("/movies/discover", {
     params: {
       page: pageParam,
       ...(genre && { with_genres: genreId!.id }),
@@ -41,13 +37,13 @@ export const getAllMovies = async ({
 };
 
 export const getMovieInfo = async (id: string) => {
-  const response = await movieApi.get<MovieInfo>(`/${id}/details`);
+  const response = await api.get<MovieInfo>(`/movies/${id}/details`);
 
   return response.data.data
 }
 
 export const getMovieReviews = async (pageParam = 1,id: string) => {
-  const response = await movieApi.get<MovieReview>(`/${id}/reviews`, {
+  const response = await api.get<MovieReview>(`/movies/${id}/reviews`, {
     params: {
       page: pageParam
     }
@@ -61,7 +57,7 @@ export const getMovieReviews = async (pageParam = 1,id: string) => {
 }
 
 export const getMovieRecommendations = async (pageParam = 1,id: string) => {
-  const response = await movieApi.get<IMovie>(`/${id}/recommendations`, {
+  const response = await api.get<IMovie>(`/movies/${id}/recommendations`, {
     params: {
       page: pageParam
     }

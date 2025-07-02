@@ -3,11 +3,11 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getMovieRecommendationQueryOptions } from "../api/query";
 import { motion } from "motion/react";
 import { Award, ChevronRight, X } from "lucide-react";
-import MediaCard from "@/components/shared/media-card";
-import LoadingSpinner from "@/components/shared/loading-spinner";
+import MediaCard from "@/components/common/media-card";
+import LoadingSpinner from "@/components/common/loading-spinner";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import EmptyState from "@/components/shared/empty-state";
+import EmptyState from "@/components/common/empty-state";
 
 const MovieRecommendationSection = () => {
   const [searchParams] = useSearchParams();

@@ -1,4 +1,4 @@
-import MediaCard from "@/components/shared/media-card";
+import MediaCard from "@/components/common/media-card";
 import type { MovieData } from "@/types/types";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useRef } from "react";

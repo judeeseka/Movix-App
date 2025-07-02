@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { movieGenres } from "@/lib/contants";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import LoadingSpinner from "@/components/shared/loading-spinner";
-import EmptyState from "@/components/shared/empty-state";
-import MediaCard from "@/components/shared/media-card";
+import LoadingSpinner from "@/components/common/loading-spinner";
+import EmptyState from "@/components/common/empty-state";
+import MediaCard from "@/components/common/media-card";
 
 const MovieHome = () => {
   const [searchparams] = useSearchParams();

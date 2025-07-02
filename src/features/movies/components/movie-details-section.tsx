@@ -18,9 +18,9 @@ import {
   X,
 } from "lucide-react";
 import { useRef, useState } from "react";
-import CastCard from "@/components/shared/cast-card";
-import LoadingSpinner from "@/components/shared/loading-spinner";
-import EmptyState from "@/components/shared/empty-state";
+import CastCard from "@/components/common/cast-card";
+import LoadingSpinner from "@/components/common/loading-spinner";
+import EmptyState from "@/components/common/empty-state";
 
 const MovieDetailsSection = () => {
   const [searchParams] = useSearchParams();

@@ -1,35 +1,27 @@
-import axios from "axios"
 import type { MovieData } from "../../../types/types";
-
-const moviesApi = axios.create({
-    baseURL: "http://localhost:3000/api/movies"
-})
-
-const seriesApi = axios.create({
-    baseURL: "http://localhost:3000/api/series"
-})
+import { api } from "@/lib/axios";
 
 export const getTrendingMovies = async () => {
-    const response = await moviesApi.get<MovieData>("/trending");
+    const response = await api.get<MovieData>("/movies/trending");
     return response.data.data
 }
 
 export const getPopularMovies = async () => {
-    const response = await moviesApi.get<MovieData>("/popular");
+    const response = await api.get<MovieData>("/movies/popular");
     return response.data.data
 }
 
 export const getTopRatedMovies = async () => {
-    const response = await moviesApi.get<MovieData>("/top-rated");
+    const response = await api.get<MovieData>("/movies/top-rated");
     return response.data.data
 }
 
 export const getPopularSeries = async () => {
-    const response = await seriesApi.get<MovieData>("/popular")
+    const response = await api.get<MovieData>("/series/popular")
     return response.data.data
 }
 
 export const getTopRatedSeries = async () => {
-    const response = await seriesApi.get<MovieData>("/top-rated");
+    const response = await api.get<MovieData>("/series/top-rated");
     return response.data.data
 }

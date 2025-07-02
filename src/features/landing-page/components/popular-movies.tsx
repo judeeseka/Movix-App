@@ -1,7 +1,7 @@
 import type { MovieData } from "../../../types/types";
 import { ChevronLeft, ChevronRight, Film } from "lucide-react";
 import { Link } from "react-router-dom";
-import MediaCard from "../../../components/shared/media-card";
+import MediaCard from "../../../components/common/media-card";
 import { useRef } from "react";
 
 const PopularMovies = ({

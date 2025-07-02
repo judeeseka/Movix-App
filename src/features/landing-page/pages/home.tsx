@@ -6,7 +6,7 @@ import {
   getTopRatedSeriesQueryOptions,
   gettrendingMoviesQueryOptions,
 } from "../api/query";
-import LoadingSpinner from "@/components/shared/loading-spinner";
+import LoadingSpinner from "@/components/common/loading-spinner";
 import HeroSection from "../components/hero-section";
 import PopularMovies from "../components/popular-movies";
 import PopularSeries from "../components/popular-series";
