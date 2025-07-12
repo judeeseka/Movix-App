@@ -21,7 +21,11 @@ const AppRoutes = () => {
           <Route path="movies/:slug" element={<MovieDetails />} />
           <Route path="tv-series" element={<SeriesHome />} />
 
-          <Route path="profile" element={<Profile />} />
+          <Route element={<PersistLogin />}>
+            <Route element={<RequireAuth />}>
+              <Route path="profile" element={<Profile />} />
+            </Route>
+          </Route>
         </Route>
 
         <Route element={<PersistLogin />}>

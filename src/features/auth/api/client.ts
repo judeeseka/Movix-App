@@ -1,6 +1,5 @@
 import type { AuthResponse, ILogin, IRegister } from "../types/types";
 import { api, secureApi } from "@/lib/axios";
-import { refresh } from "@/lib/refresh-token";
   
 
 export const registerUser = async (data: IRegister) => {
@@ -30,5 +29,3 @@ export const onboardUser = async (formData: FormData) => {
     const response = await secureApi.post<AuthResponse>("/auth/onboard", formData)
     return response.data;
 }
-
-export const authRefresh = refresh
