@@ -8,12 +8,14 @@ import axios from "axios";
 import { toast } from "sonner";
 import { loginUser } from "../api/client";
 import { useAuthStore } from "@/stores/auth-store";
+import { useFavouriteStore } from "@/stores/favourite-store";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setToken, setUser } = useAuthStore();
+  const { setFavourites } = useFavouriteStore();
 
   const {
     register,
@@ -32,6 +34,7 @@ export default function Login() {
         username: response.data.username,
         isOnboarded: response.data.isOnboarded,
       });
+      setFavourites(response.data.favorites);
 
       toast.success(response.message);
 
@@ -43,10 +46,8 @@ export default function Login() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (!error.response) {
-          // This is likely a network error
           toast.error("Network error. Please check your internet connection.");
         } else {
-          // This is a valid response error
           toast.error(error.response.data?.message || "Something went wrong");
         }
       } else {

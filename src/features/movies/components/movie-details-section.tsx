@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { getMovieInfoQueryOptions } from "../api/query";
 import { formatRuntime, getBackdropUrl, getPosterUrl } from "@/lib/utils";
@@ -21,17 +21,30 @@ import { useRef, useState } from "react";
 import CastCard from "@/components/common/cast-card";
 import LoadingSpinner from "@/components/common/loading-spinner";
 import EmptyState from "@/components/common/empty-state";
+import { useAuthStore } from "@/stores/auth-store";
+import { toast } from "sonner";
+import { toggleFavouriteMutationOptions } from "@/features/profile";
+
+import type { FavouritePayload } from "@/types/types";
+import { useFavouriteStore } from "@/stores/favourite-store";
 
 const MovieDetailsSection = () => {
   const [searchParams] = useSearchParams();
   const queryId = searchParams.get("id");
   const [userRating] = useState(0);
-  const isFavorited = false;
+  const { favourites } = useFavouriteStore();
   const isInWatchlist = false;
   const { data, isLoading, status } = useQuery(
     getMovieInfoQueryOptions(queryId as string)
   );
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuthStore();
+
+  const isFavorited = favourites.some(
+    (item) => item.id === data?.details.id && item.media_type === "movie"
+  );
+
+  const { mutate, isPending } = useMutation(toggleFavouriteMutationOptions());
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -56,9 +69,28 @@ const MovieDetailsSection = () => {
       />
     );
 
+  const toggleFavorite = () => {
+    if (!user) {
+      toast.warning("Login to add movie to favourites");
+      return;
+    }
+    if (!data) return;
+
+    const payload: FavouritePayload = {
+      id: data.details.id,
+      title: data.details.title,
+      release_date: data.details.release_date,
+      poster_path: data.details.poster_path,
+      vote_average: data.details.vote_average,
+      media_type: "movie",
+    };
+
+    mutate(payload);
+  };
+
   return (
     <>
-      <section className="relative h-[calc(100vh_-_64px)] flex items-center justify-center overflow-hidden">
+      <section className="relative xl:h-[calc(100vh_-_64px)] flex items-center justify-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
           <img
@@ -142,7 +174,7 @@ const MovieDetailsSection = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 //   onClick={() => setShowTrailer(true)}
-                className="flex items-center justify-center space-x-2 bg-gradient-to-r from-amber-500 to-red-500 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-200 group"
+                className="flex items-center justify-center space-x-2 bg-gradient-to-r from-amber-500 to-red-500 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-200 group cursor-pointer"
               >
                 <Play
                   className="h-5 w-5 group-hover:scale-110 transition-transform"
@@ -152,12 +184,12 @@ const MovieDetailsSection = () => {
               </button>
               <div className="flex space-x-2">
                 <button
-                  // onClick={toggleFavorite}
+                  onClick={toggleFavorite}
                   className={`p-4 rounded-full backdrop-blur-sm transition-all duration-200 ${
                     isFavorited
                       ? "bg-red-500 text-white"
                       : "bg-white/20 text-white hover:bg-red-500"
-                  }`}
+                  } ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   <Heart
                     className="h-5 w-5"
@@ -166,7 +198,7 @@ const MovieDetailsSection = () => {
                 </button>
                 <button
                   // onClick={toggleWatchlist}
-                  className={`p-4 rounded-full backdrop-blur-sm transition-all duration-200 ${
+                  className={`p-4 rounded-full backdrop-blur-sm transition-all duration-200 cursor-pointer ${
                     isInWatchlist
                       ? "bg-amber-500 text-white"
                       : "bg-white/20 text-white hover:bg-amber-500"
@@ -177,7 +209,7 @@ const MovieDetailsSection = () => {
                     fill={isInWatchlist ? "currentColor" : "none"}
                   />
                 </button>
-                <button className="p-4 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-all duration-200">
+                <button className="p-4 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-all duration-200 cursor-pointer">
                   <Share2 className="h-5 w-5" />
                 </button>
               </div>

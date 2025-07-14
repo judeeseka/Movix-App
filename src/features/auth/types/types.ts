@@ -1,3 +1,5 @@
+import type { FavouritePayload } from "@/types/types";
+
 export interface ILogin {
     email: string;
     password: string;
@@ -17,6 +19,7 @@ export interface AuthResponse {
         userId: string;
         isOnboarded: boolean;
         avatarUrl : string;
+        favorites: FavouritePayload[]
     },
     message: string;
     success: boolean

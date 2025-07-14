@@ -92,3 +92,14 @@ export interface ISeriesResult {
     vote_average:      number;
     vote_count:        number;
 }
+
+export interface FavouritePayload {
+    id: number,
+    title?: string;
+    name?: string;
+    first_air_date?: string;
+    release_date?: Date;
+    poster_path: string;
+    vote_average: number;
+    media_type: "movie" | "tv";
+}

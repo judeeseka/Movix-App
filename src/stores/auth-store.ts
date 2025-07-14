@@ -15,10 +15,7 @@ export const useAuthStore = create(
 
     setToken: (token) => set({ token }),
     setUser: (user) => set((state) => ({
-      user: {
-        ...state.user,
-        ...user
-      }
+      user: user === null ? null : { ...state.user, ...user }
     })),
   }), {name: "AuthStore"})
 );

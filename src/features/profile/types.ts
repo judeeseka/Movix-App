@@ -1,3 +1,5 @@
+import type { Result } from "@/types/types";
+
 export interface IUser {
     success: boolean;
     message: string;
@@ -21,4 +23,12 @@ export interface IUserData {
     }
     totalReviews:    number;
     averageRating:   number;
+}
+
+export interface IUserFavourite {
+    success: boolean;
+    message: string;
+    data: {
+        favourites: Result[]
+    }
 }
