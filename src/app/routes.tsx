@@ -4,7 +4,7 @@ import { Home } from "@/features/landing-page";
 import { MovieDetails, MovieHome } from "@/features/movies";
 import { SeriesHome } from "@/features/series";
 import { Login, Onboarding, Register } from "@/features/auth";
-import { Favourites, Profile } from "@/features/profile";
+import { Favourites, Profile, WatchLists } from "@/features/profile";
 import RequireAuth from "@/components/wrappers/require-auth";
 import PersistLogin from "@/components/wrappers/persist-login";
 import NotFound from "@/components/pages/not-found";
@@ -25,6 +25,7 @@ const AppRoutes = () => {
             <Route element={<RequireAuth />}>
               <Route path="profile" element={<Profile />} />
               <Route path="favourites" element={<Favourites />} />
+              <Route path="watchlists" element={<WatchLists />} />
             </Route>
           </Route>
 

@@ -103,3 +103,26 @@ export interface FavouritePayload {
     vote_average: number;
     media_type: "movie" | "tv";
 }
+
+export interface WatchListMediaItem {
+    id: number,
+    title?: string;
+    name?: string;
+    first_air_date?: string;
+    release_date?: string;
+    poster_path: string;
+    vote_average: number;
+    media_type: "movie" | "tv";
+}
+
+export interface WatchListMediaProp extends WatchListMediaItem {
+    watchlist_name: string;
+}
+
+export interface WatchListProp {
+    _id: string;
+    name: string;
+    description: string;
+    is_public: boolean;
+    media: WatchListMediaItem[]
+}
