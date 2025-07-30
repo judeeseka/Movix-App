@@ -124,5 +124,7 @@ export interface WatchListProp {
     name: string;
     description: string;
     is_public: boolean;
-    media: WatchListMediaItem[]
+    media: WatchListMediaItem[];
+    created_at: Date;
+    updated_at: Date;
 }

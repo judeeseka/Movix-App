@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, Heart, Bookmark, Calendar, Tv } from "lucide-react";
-import type { FavouritePayload, Result } from "../../types/types";
+import type {
+  FavouritePayload,
+  Result,
+  WatchListMediaItem,
+} from "../../types/types";
 import { getPosterUrl } from "@/lib/utils";
 
+type MediaType = Result | FavouritePayload | WatchListMediaItem;
+
 interface MediaCardProps {
-  media: Result | FavouritePayload;
-  onFavorite?: (media: Result | FavouritePayload) => void;
-  onWatchlist?: (media: Result | FavouritePayload) => void;
+  media: MediaType;
+  onFavorite?: (media: MediaType) => void;
+  onWatchlist?: (media: MediaType) => void;
   isFavorited?: boolean;
   isInWatchlist?: boolean;
   type: "movie" | "tv";

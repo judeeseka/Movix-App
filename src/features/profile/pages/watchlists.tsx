@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import {
@@ -8,20 +8,15 @@ import {
   Trash2,
   X,
   Save,
-  Grid,
-  List,
   Search,
   Lock,
   Globe,
-  Calendar,
-  Film,
-  Tv,
 } from "lucide-react";
-import { toast } from "sonner";
 import LoadingSpinner from "@/components/common/loading-spinner";
 import EmptyState from "@/components/common/empty-state";
 import MediaCard from "@/components/common/media-card";
 import { useWatchListStore } from "@/stores/watchlist-store";
+// import { useDebounce } from "@/hooks/use-debounce";
 
 interface WatchlistForm {
   name: string;
@@ -30,231 +25,124 @@ interface WatchlistForm {
 }
 
 export default function Watchlists() {
-  const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
-  const [selectedWatchlist, setSelectedWatchlist] = useState<Watchlist | null>(
-    null
-  );
-  const [watchlistItems, setWatchlistItems] = useState<MediaItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
+  // const [selectedWatchlist, setSelectedWatchlist] = useState(
+  //   null
+  // );
+  // const [watchlistItems, setWatchlistItems] = useState<MediaItem[]>([]);
+  const [loading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingWatchlist, setEditingWatchlist] = useState<Watchlist | null>(
-    null
-  );
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [editingWatchlist, setEditingWatchlist] = useState<null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  // const debouncedSearchQuery = useDebounce(searchQuery, 300)
 
   const {
     register,
-    handleSubmit,
+    // handleSubmit,
     reset,
-    setValue,
+    // setValue,
     formState: { errors },
   } = useForm<WatchlistForm>();
 
-  // const { watchlists } = useWatchListStore();
+  const { watchlists } = useWatchListStore();
+  const [selectedWatchlist, setSelectedWatchlist] = useState(watchlists[0]);
 
-  useEffect(() => {
-    loadWatchlists();
-  }, []);
+  // const createWatchlist = async (data: WatchlistForm) => {
+  //   try {
+  //     const newWatchlist: Watchlist = {
+  //       id: Date.now().toString(),
+  //       user_id: "user1",
+  //       name: data.name,
+  //       description: data.description,
+  //       is_public: data.is_public,
+  //       created_at: new Date().toISOString(),
+  //       updated_at: new Date().toISOString(),
+  //     };
 
-  useEffect(() => {
-    if (selectedWatchlist) {
-      loadWatchlistItems(selectedWatchlist.id);
-    }
-  }, [selectedWatchlist]);
+  //     const updatedWatchlists = [...watchlists, newWatchlist];
+  //     setWatchlists(updatedWatchlists);
+  //     localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
 
-  const loadWatchlists = async () => {
-    try {
-      setLoading(true);
+  //     setShowCreateModal(false);
+  //     reset();
+  //     toast.success("Watchlist created successfully!");
+  //   } catch (error) {
+  //     toast.error("Failed to create watchlist");
+  //   }
+  // };
 
-      // Load watchlists from localStorage (in real app, fetch from backend)
-      const savedWatchlists = localStorage.getItem("userWatchlists");
-      if (savedWatchlists) {
-        const parsed = JSON.parse(savedWatchlists);
-        setWatchlists(parsed);
-        if (parsed.length > 0 && !selectedWatchlist) {
-          setSelectedWatchlist(parsed[0]);
-        }
-      } else {
-        // Create default watchlist
-        const defaultWatchlist: Watchlist = {
-          id: "1",
-          user_id: "user1",
-          name: "Watch Later",
-          description: "Movies and TV shows I want to watch",
-          is_public: false,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-        setWatchlists([defaultWatchlist]);
-        setSelectedWatchlist(defaultWatchlist);
-        localStorage.setItem(
-          "userWatchlists",
-          JSON.stringify([defaultWatchlist])
-        );
-      }
-    } catch (error) {
-      console.error("Error loading watchlists:", error);
-      toast.error("Failed to load watchlists");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const updateWatchlist = async (data: WatchlistForm) => {
+  //   if (!editingWatchlist) return;
 
-  const loadWatchlistItems = async (watchlistId: string) => {
-    try {
-      // Load watchlist items from localStorage (in real app, fetch from backend)
-      const savedItems = localStorage.getItem(`watchlist_${watchlistId}_items`);
-      if (savedItems) {
-        const items = JSON.parse(savedItems);
-        setWatchlistItems(items);
-      } else {
-        // Mock data for demo
-        const mockItems: MediaItem[] = [
-          {
-            id: 3,
-            title: "The Dark Knight",
-            overview:
-              "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.",
-            poster_path: "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-            backdrop_path: "/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
-            release_date: "2008-07-16",
-            vote_average: 8.5,
-            vote_count: 32000,
-            genre_ids: [28, 80, 18],
-            adult: false,
-            original_language: "en",
-            original_title: "The Dark Knight",
-            popularity: 88.4,
-            video: false,
-            media_type: "movie",
-          },
-          {
-            id: 4,
-            name: "Stranger Things",
-            overview:
-              "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-            poster_path: "/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
-            backdrop_path: "/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
-            first_air_date: "2016-07-15",
-            vote_average: 8.7,
-            vote_count: 15000,
-            genre_ids: [18, 10765, 9648],
-            adult: false,
-            original_language: "en",
-            original_name: "Stranger Things",
-            popularity: 91.3,
-            origin_country: ["US"],
-            media_type: "tv",
-          },
-        ];
-        setWatchlistItems(mockItems);
-        localStorage.setItem(
-          `watchlist_${watchlistId}_items`,
-          JSON.stringify(mockItems)
-        );
-      }
-    } catch (error) {
-      console.error("Error loading watchlist items:", error);
-    }
-  };
+  //   try {
+  //     const updatedWatchlist = {
+  //       ...editingWatchlist,
+  //       name: data.name,
+  //       description: data.description,
+  //       is_public: data.is_public,
+  //       updated_at: new Date().toISOString(),
+  //     };
 
-  const createWatchlist = async (data: WatchlistForm) => {
-    try {
-      const newWatchlist: Watchlist = {
-        id: Date.now().toString(),
-        user_id: "user1",
-        name: data.name,
-        description: data.description,
-        is_public: data.is_public,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
+  //     const updatedWatchlists = watchlists.map((w) =>
+  //       w.id === editingWatchlist.id ? updatedWatchlist : w
+  //     );
 
-      const updatedWatchlists = [...watchlists, newWatchlist];
-      setWatchlists(updatedWatchlists);
-      localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
+  //     setWatchlists(updatedWatchlists);
+  //     localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
 
-      setShowCreateModal(false);
-      reset();
-      toast.success("Watchlist created successfully!");
-    } catch (error) {
-      toast.error("Failed to create watchlist");
-    }
-  };
+  //     if (selectedWatchlist?.id === editingWatchlist.id) {
+  //       setSelectedWatchlist(updatedWatchlist);
+  //     }
 
-  const updateWatchlist = async (data: WatchlistForm) => {
-    if (!editingWatchlist) return;
+  //     setEditingWatchlist(null);
+  //     reset();
+  //     toast.success("Watchlist updated successfully!");
+  //   } catch (error) {
+  //     toast.error("Failed to update watchlist");
+  //   }
+  // };
 
-    try {
-      const updatedWatchlist = {
-        ...editingWatchlist,
-        name: data.name,
-        description: data.description,
-        is_public: data.is_public,
-        updated_at: new Date().toISOString(),
-      };
+  // const deleteWatchlist = async (watchlistId: string) => {
+  //   if (watchlists.length === 1) {
+  //     toast.error("You must have at least one watchlist");
+  //     return;
+  //   }
 
-      const updatedWatchlists = watchlists.map((w) =>
-        w.id === editingWatchlist.id ? updatedWatchlist : w
-      );
+  //   try {
+  //     const updatedWatchlists = watchlists.filter((w) => w.id !== watchlistId);
+  //     setWatchlists(updatedWatchlists);
+  //     localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
+  //     localStorage.removeItem(`watchlist_${watchlistId}_items`);
 
-      setWatchlists(updatedWatchlists);
-      localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
+  //     if (selectedWatchlist?.id === watchlistId) {
+  //       setSelectedWatchlist(updatedWatchlists[0] || null);
+  //     }
 
-      if (selectedWatchlist?.id === editingWatchlist.id) {
-        setSelectedWatchlist(updatedWatchlist);
-      }
+  //     toast.success("Watchlist deleted successfully!");
+  //   } catch (error) {
+  //     toast.error("Failed to delete watchlist");
+  //   }
+  // };
 
-      setEditingWatchlist(null);
-      reset();
-      toast.success("Watchlist updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update watchlist");
-    }
-  };
+  // const removeFromWatchlist = (mediaId: number) => {
+  //   if (!selectedWatchlist) return;
 
-  const deleteWatchlist = async (watchlistId: string) => {
-    if (watchlists.length === 1) {
-      toast.error("You must have at least one watchlist");
-      return;
-    }
+  //   const updatedItems = watchlistItems.filter((item) => item.id !== mediaId);
+  //   setWatchlistItems(updatedItems);
+  //   localStorage.setItem(
+  //     `watchlist_${selectedWatchlist.id}_items`,
+  //     JSON.stringify(updatedItems)
+  //   );
+  //   toast.success("Removed from watchlist");
+  // };
 
-    try {
-      const updatedWatchlists = watchlists.filter((w) => w.id !== watchlistId);
-      setWatchlists(updatedWatchlists);
-      localStorage.setItem("userWatchlists", JSON.stringify(updatedWatchlists));
-      localStorage.removeItem(`watchlist_${watchlistId}_items`);
-
-      if (selectedWatchlist?.id === watchlistId) {
-        setSelectedWatchlist(updatedWatchlists[0] || null);
-      }
-
-      toast.success("Watchlist deleted successfully!");
-    } catch (error) {
-      toast.error("Failed to delete watchlist");
-    }
-  };
-
-  const removeFromWatchlist = (mediaId: number) => {
-    if (!selectedWatchlist) return;
-
-    const updatedItems = watchlistItems.filter((item) => item.id !== mediaId);
-    setWatchlistItems(updatedItems);
-    localStorage.setItem(
-      `watchlist_${selectedWatchlist.id}_items`,
-      JSON.stringify(updatedItems)
-    );
-    toast.success("Removed from watchlist");
-  };
-
-  const openEditModal = (watchlist: Watchlist) => {
-    setEditingWatchlist(watchlist);
-    setValue("name", watchlist.name);
-    setValue("description", watchlist.description || "");
-    setValue("is_public", watchlist.is_public);
-    setShowCreateModal(true);
-  };
+  // const openEditModal = (watchlist: Watchlist) => {
+  //   setEditingWatchlist(watchlist);
+  //   setValue("name", watchlist.name);
+  //   setValue("description", watchlist.description || "");
+  //   setValue("is_public", watchlist.is_public);
+  //   setShowCreateModal(true);
+  // };
 
   const closeModal = () => {
     setShowCreateModal(false);
@@ -262,15 +150,11 @@ export default function Watchlists() {
     reset();
   };
 
-  const filteredItems = watchlistItems.filter((item) => {
+  const filteredItems = selectedWatchlist?.media.filter((item) => {
     if (!searchQuery.trim()) return true;
     const title = item.media_type === "movie" ? item.title : item.name;
-    return title.toLowerCase().includes(searchQuery.toLowerCase());
+    return title?.toLowerCase().includes(searchQuery.toLowerCase());
   });
-
-  const getMediaTitle = (item: MediaItem) => {
-    return item.media_type === "movie" ? item.title : item.name;
-  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
@@ -315,9 +199,9 @@ export default function Watchlists() {
                 <div className="space-y-2">
                   {watchlists.map((watchlist) => (
                     <div
-                      key={watchlist.id}
+                      key={watchlist._id}
                       className={`p-3 rounded-lg cursor-pointer transition-colors group ${
-                        selectedWatchlist?.id === watchlist.id
+                        selectedWatchlist?._id === watchlist._id
                           ? "bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800"
                           : "hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
@@ -352,7 +236,7 @@ export default function Watchlists() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              openEditModal(watchlist);
+                              // openEditModal(watchlist);
                             }}
                             className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
                           >
@@ -361,7 +245,7 @@ export default function Watchlists() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              deleteWatchlist(watchlist.id);
+                              // deleteWatchlist(watchlist._id);
                             }}
                             className="p-1 text-gray-400 hover:text-red-500 transition-colors"
                           >
@@ -439,13 +323,7 @@ export default function Watchlists() {
                     }}
                   />
                 ) : (
-                  <div
-                    className={
-                      viewMode === "grid"
-                        ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-                        : "space-y-4"
-                    }
-                  >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {filteredItems.map((item, index) => (
                       <motion.div
                         key={`${item.media_type}-${item.id}`}
@@ -455,7 +333,7 @@ export default function Watchlists() {
                       >
                         <MediaCard
                           media={item}
-                          onWatchlist={() => removeFromWatchlist(item.id)}
+                          // onWatchlist={() => removeFromWatchlist(item.id)}
                           isInWatchlist={true}
                           type={item.media_type}
                         />
@@ -468,7 +346,7 @@ export default function Watchlists() {
               <EmptyState
                 icon={Bookmark}
                 title="No watchlist selected"
-                description="Select a watchlist from the sidebar to view its contents."
+                description="Select a watchlist from the sidebar to view its contents/create new watchlist."
               />
             )}
           </div>
@@ -495,9 +373,9 @@ export default function Watchlists() {
               </div>
 
               <form
-                onSubmit={handleSubmit(
-                  editingWatchlist ? updateWatchlist : createWatchlist
-                )}
+                // onSubmit={handleSubmit(
+                //   editingWatchlist ? updateWatchlist : createWatchlist
+                // )}
                 className="space-y-4"
               >
                 <div>

@@ -22,10 +22,12 @@ const AppRoutes = () => {
             <Route path="movies/:slug" element={<MovieDetails />} />
             <Route path="tv-series" element={<SeriesHome />} />
 
+            <Route path="watchlists" element={<WatchLists />} />
+
             <Route element={<RequireAuth />}>
               <Route path="profile" element={<Profile />} />
               <Route path="favourites" element={<Favourites />} />
-              <Route path="watchlists" element={<WatchLists />} />
+              {/* <Route path="watchlists" element={<WatchLists />} /> */}
             </Route>
           </Route>
 
