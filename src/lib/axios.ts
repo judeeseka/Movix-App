@@ -3,13 +3,13 @@ import axios from "axios";
 import { refresh } from "./services/auth-service";
 
 export const api = axios.create({
-    // baseURL: "http://localhost:3000/api",
+    // baseURL: "http://localhost:3000/api"
     baseURL: "https://movix-backend-qffl.onrender.com/api"
 })
 
 export const secureApi = axios.create({
-    // baseURL: "http://localhost:3000/api",
-    baseURL: "https://movix-backend-qffl.onrender.com/api"
+    // baseURL: "http://localhost:3000/api"
+    baseURL: "https://movix-backend-qffl.onrender.com/api",
     withCredentials: true
 })
 
